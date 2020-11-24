@@ -15,17 +15,6 @@ public class TCPServer extends Thread {
 	}
 
 	@Override
-	public void interrupt() {
-		try {
-			System.out.println("closing");
-			this.server.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
-	@Override
 	public void run() {
 		try {
 			System.out.println("Starting server");
