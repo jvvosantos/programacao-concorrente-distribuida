@@ -24,7 +24,7 @@ public class TCPMain {
 			measuringClientThread.start();
 			
 			for (int j = 1; j < numClients; j++) {
-		        TCPClient client = new TCPClient(latch, true);
+		        TCPClient client = new TCPClient(latch, false);
 				Thread clientThread = new Thread(client);
 				clientThread.start();
 			}
