@@ -29,15 +29,15 @@ public class Exercicio2 {
 		latch.await();
 		
 		GenericBarChart avgComparison = new GenericBarChart("Comparação socket TCP x UDP (média tempo)", "Num clients", "Tempo (ns)");
-		ChartSeries tcpSeries = new ChartSeries("TCP", tcp.getNumClientArray(), tcp.getAvgTimeArray());
 		ChartSeries udpSeries = new ChartSeries("UDP", udp.getNumClientArray(), udp.getAvgTimeArray());
-		avgComparison.setData(Arrays.asList(tcpSeries, udpSeries));
+		ChartSeries tcpSeries = new ChartSeries("TCP", tcp.getNumClientArray(), tcp.getAvgTimeArray());
+		avgComparison.setData(Arrays.asList(udpSeries, tcpSeries));
 		avgComparison.show();
 		
 		GenericBarChart stdDeviationComparison = new GenericBarChart("Comparação socket TCP x UDP (desvio padrão)", "Num clients", "Desvio padrão");
-		tcpSeries = new ChartSeries("TCP", tcp.getNumClientArray(), tcp.getStdDeviationArray());
 		udpSeries = new ChartSeries("UDP", udp.getNumClientArray(), udp.getStdDeviationArray());
-		stdDeviationComparison.setData(Arrays.asList(tcpSeries, udpSeries));
+		tcpSeries = new ChartSeries("TCP", tcp.getNumClientArray(), tcp.getStdDeviationArray());
+		stdDeviationComparison.setData(Arrays.asList(udpSeries, tcpSeries));
 		stdDeviationComparison.show();
 	}
 
