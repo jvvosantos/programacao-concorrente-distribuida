@@ -1,9 +1,12 @@
 package br.cin.ufpe.pcd.exercicio2;
 
+import java.util.Arrays;
 import java.util.concurrent.CountDownLatch;
 
 import br.cin.ufpe.pcd.exercicio2.tcp.TCPMain;
 import br.cin.ufpe.pcd.exercicio2.udp.UDPMain;
+import br.cin.ufpe.pcd.util.ChartSeries;
+import br.cin.ufpe.pcd.util.GenericBarChart;
 
 public class Exercicio2 {
 	
@@ -25,8 +28,17 @@ public class Exercicio2 {
 		
 		latch.await();
 		
-		//TODO plot chart
-
+		GenericBarChart avgComparison = new GenericBarChart("Comparação socket TCP x UDP (média tempo)", "Num clients", "Tempo (ns)");
+		ChartSeries tcpSeries = new ChartSeries("TCP", tcp.getNumClientArray(), tcp.getAvgTimeArray());
+		ChartSeries udpSeries = new ChartSeries("UDP", udp.getNumClientArray(), udp.getAvgTimeArray());
+		avgComparison.setData(Arrays.asList(tcpSeries, udpSeries));
+		avgComparison.show();
+		
+		GenericBarChart stdDeviationComparison = new GenericBarChart("Comparação socket TCP x UDP (desvio padrão)", "Num clients", "Desvio padrão");
+		tcpSeries = new ChartSeries("TCP", tcp.getNumClientArray(), tcp.getStdDeviationArray());
+		udpSeries = new ChartSeries("UDP", udp.getNumClientArray(), udp.getStdDeviationArray());
+		stdDeviationComparison.setData(Arrays.asList(tcpSeries, udpSeries));
+		stdDeviationComparison.show();
 	}
 
 }

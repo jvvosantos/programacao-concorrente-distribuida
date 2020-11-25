@@ -4,9 +4,9 @@ import java.util.concurrent.CountDownLatch;
 
 public class TCPMain extends Thread {
 	
-	private int[] numClientArray;
-	private long[] avgTimeArray;
-	private double[] stdDeviationArray;
+	private Integer[] numClientArray;
+	private Long[] avgTimeArray;
+	private Double[] stdDeviationArray;
 	
 	private CountDownLatch latch;
 	
@@ -25,10 +25,10 @@ public class TCPMain extends Thread {
 			Thread serverThread = new Thread(server);
 			serverThread.start();
 			
-			int[] numClientsArray = {2, 5, 10};
+			Integer[] numClientsArray = {2, 5, 10};
 			this.numClientArray = numClientsArray;
-			this.avgTimeArray = new long[numClientsArray.length];
-			this.stdDeviationArray = new double[numClientsArray.length];
+			this.avgTimeArray = new Long[numClientsArray.length];
+			this.stdDeviationArray = new Double[numClientsArray.length];
 			
 			CountDownLatch latch;
 			int numClients;
@@ -69,15 +69,15 @@ public class TCPMain extends Thread {
 		}
 	}
 	
-	public int[] getNumClientArray(){
+	public Integer[] getNumClientArray(){
 		return this.numClientArray;
 	}
 	
-	public long[] getAvgTimeArray(){
+	public Long[] getAvgTimeArray(){
 		return this.avgTimeArray;
 	}
 	
-	public double[] getStdDeviationArray(){
+	public Double[] getStdDeviationArray(){
 		return this.stdDeviationArray;
 	}
 	
