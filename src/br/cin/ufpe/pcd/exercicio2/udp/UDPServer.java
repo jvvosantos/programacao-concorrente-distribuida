@@ -1,17 +1,21 @@
-package exercicio2.tcp;
+package br.cin.ufpe.pcd.exercicio2.udp;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class TCPServer extends Thread {
 
+public class UDPServer extends Thread {
+	
 	private ServerSocket server;
 
-	public TCPServer() {
+	public UDPServer() {
 	}
 
 	@Override
@@ -41,14 +45,33 @@ public class TCPServer extends Thread {
 		@Override
 		public void run() {
 			try {				
+				DatagramSocket udpSocket = new DatagramSocket();
+				int udpSocketPort = udpSocket.getLocalPort();
+				
 				PrintWriter writer = new PrintWriter(conn.getOutputStream(), true);
+				writer.println(udpSocketPort);
+				
 				BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+				String clientUdpPortStr = reader.readLine();
+				int clientUdpPort = Integer.parseInt(clientUdpPortStr);
+
 				String message = "Sim, seria um prazer!";
-
-				while (reader.readLine() != null){
-					writer.println(message);
+				
+				byte[] buf = new byte[19];
+				DatagramPacket sendPacket = new DatagramPacket (message.getBytes(), message.getBytes().length,
+																InetAddress.getByName("localhost"), clientUdpPort);
+				
+				boolean exchanging = true;
+				while (exchanging){
+		        	DatagramPacket receivePacket = new DatagramPacket(buf, buf.length);
+		        	udpSocket.receive(receivePacket);
+		        	udpSocket.send(sendPacket);
+					if (new String(receivePacket.getData()).trim().startsWith("end")){
+						exchanging = false;
+					}
 				}
-
+				
+				udpSocket.close();
 				conn.close();
 			}
 			catch (IOException e){

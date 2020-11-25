@@ -1,4 +1,4 @@
-package exercicio2.udp;
+package br.cin.ufpe.pcd.exercicio2.udp;
 
 import java.io.BufferedReader;
 import java.io.IOException;

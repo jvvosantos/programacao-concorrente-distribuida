@@ -1,4 +1,4 @@
-package exercicio2.tcp;
+package br.cin.ufpe.pcd.exercicio2.tcp;
 
 import java.util.concurrent.CountDownLatch;
 

@@ -1,9 +1,9 @@
-package exercicio2;
+package br.cin.ufpe.pcd.exercicio2;
 
 import java.util.concurrent.CountDownLatch;
 
-import exercicio2.tcp.TCPMain;
-import exercicio2.udp.UDPMain;
+import br.cin.ufpe.pcd.exercicio2.tcp.TCPMain;
+import br.cin.ufpe.pcd.exercicio2.udp.UDPMain;
 
 public class Exercicio2 {
 	
