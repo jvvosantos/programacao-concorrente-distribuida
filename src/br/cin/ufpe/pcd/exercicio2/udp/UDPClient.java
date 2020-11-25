@@ -16,7 +16,7 @@ public class UDPClient implements Runnable {
 	private CountDownLatch latch;
 
 	private boolean measure;
-	private long avgTime;
+	private double avgTime;
 	private double stdDeviation;
 
 	public UDPClient(CountDownLatch latch, boolean measure) {
@@ -60,7 +60,7 @@ public class UDPClient implements Runnable {
 	private void sendMessagesMeasure(DatagramSocket udpSocket, int serverUdpPort, String message) throws IOException {
 		long startTime = 0;
 		int tries = 10000;
-		long[] measures = new long[tries];
+		double[] measures = new double[tries];
 
 		byte[] buf = new byte[21];
 		DatagramPacket sendPacket = new DatagramPacket (message.getBytes(), message.getBytes().length,
@@ -71,7 +71,7 @@ public class UDPClient implements Runnable {
 			startTime = System.nanoTime();
 			udpSocket.send(sendPacket);
 			udpSocket.receive(receivePacket);
-			measures[i] = System.nanoTime() - startTime;
+			measures[i] = (System.nanoTime() - startTime) / 1_000_000.00;
 		}
 		
 		String endMessage = "end";
@@ -82,7 +82,7 @@ public class UDPClient implements Runnable {
 
 		this.avgTime = Arrays.stream(measures).sum() / measures.length;
 
-		long sum = 0;
+		double sum = 0;
 		for (int i = 0; i < measures.length; i++) {
 			sum += Math.pow((measures[i] - this.avgTime), 2);
 		}
@@ -110,7 +110,7 @@ public class UDPClient implements Runnable {
 		
 	}
 
-	public long getAvgTime(){
+	public double getAvgTime(){
 		return this.avgTime;
 	}
 

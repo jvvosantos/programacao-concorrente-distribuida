@@ -1,11 +1,13 @@
 package br.cin.ufpe.pcd.exercicio2.tcp;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.concurrent.CountDownLatch;
 
 public class TCPMain extends Thread {
 	
 	private Integer[] numClientArray;
-	private Long[] avgTimeArray;
+	private Double[] avgTimeArray;
 	private Double[] stdDeviationArray;
 	
 	private CountDownLatch latch;
@@ -27,7 +29,7 @@ public class TCPMain extends Thread {
 			
 			Integer[] numClientsArray = {2, 5, 10};
 			this.numClientArray = numClientsArray;
-			this.avgTimeArray = new Long[numClientsArray.length];
+			this.avgTimeArray = new Double[numClientsArray.length];
 			this.stdDeviationArray = new Double[numClientsArray.length];
 			
 			CountDownLatch latch;
@@ -49,10 +51,10 @@ public class TCPMain extends Thread {
 				}
 
 				latch.await();
-				this.avgTimeArray[i] = measuringClient.getAvgTime();
-				this.stdDeviationArray[i] = measuringClient.getStdDeviation();
+				this.avgTimeArray[i] = new BigDecimal(measuringClient.getAvgTime()).setScale(7, RoundingMode.HALF_UP).doubleValue();
+				this.stdDeviationArray[i] = new BigDecimal(measuringClient.getStdDeviation()).setScale(7, RoundingMode.HALF_UP).doubleValue();
 				
-				System.out.println("avg time: "+measuringClient.getAvgTime()+" nanosec");
+				System.out.println("avg time: "+measuringClient.getAvgTime()+" ms");
 				System.out.printf("std deviation: %.2f", measuringClient.getStdDeviation());
 				System.out.println();
 				
@@ -73,7 +75,7 @@ public class TCPMain extends Thread {
 		return this.numClientArray;
 	}
 	
-	public Long[] getAvgTimeArray(){
+	public Double[] getAvgTimeArray(){
 		return this.avgTimeArray;
 	}
 	

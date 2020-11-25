@@ -13,7 +13,7 @@ public class TCPClient implements Runnable {
 	private CountDownLatch latch;
 
 	private boolean measure;
-	private long avgTime;
+	private double avgTime;
 	private double stdDeviation;
 
 	public TCPClient(CountDownLatch latch, boolean measure) {
@@ -50,17 +50,17 @@ public class TCPClient implements Runnable {
 	private void sendMessagesMeasure(PrintWriter writer, BufferedReader reader, String msg) throws IOException {
 		long startTime = 0;
 		int tries = 10000;
-		long[] measures = new long[tries];
+		double[] measures = new double[tries];
 		for (int i = 0; i < tries; i++) {			
 			startTime = System.nanoTime();
 			writer.println(msg);
 			reader.readLine();
-			measures[i] = System.nanoTime() - startTime;
+			measures[i] = (System.nanoTime() - startTime) / 1_000_000.00;
 		}
 
 		this.avgTime = Arrays.stream(measures).sum() / measures.length;
 
-		long sum = 0;
+		double sum = 0;
 		for (int i = 0; i < measures.length; i++) {
 			sum += Math.pow((measures[i] - this.avgTime), 2);
 		}
@@ -76,7 +76,7 @@ public class TCPClient implements Runnable {
 		}
 	}
 
-	public long getAvgTime(){
+	public double getAvgTime(){
 		return this.avgTime;
 	}
 
