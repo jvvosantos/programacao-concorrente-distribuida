@@ -1,8 +1,12 @@
 package br.cin.ufpe.pcd.exercicio2.tcp;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.concurrent.CountDownLatch;
+
+import br.cin.ufpe.pcd.util.ChartSeries;
+import br.cin.ufpe.pcd.util.Exporter;
 
 public class TCPMain extends Thread {
 	
@@ -27,7 +31,7 @@ public class TCPMain extends Thread {
 			Thread serverThread = new Thread(server);
 			serverThread.start();
 			
-			Integer[] numClientsArray = {2, 5, 10};
+			Integer[] numClientsArray = {2, 5, 10, 20};
 			this.numClientArray = numClientsArray;
 			this.avgTimeArray = new Double[numClientsArray.length];
 			this.stdDeviationArray = new Double[numClientsArray.length];
@@ -83,8 +87,17 @@ public class TCPMain extends Thread {
 		return this.stdDeviationArray;
 	}
 	
-	public static void main(String[] args) throws InterruptedException {
-		(new Thread(new TCPMain())).start();
+	public static void main(String[] args) throws InterruptedException, IOException {
+		CountDownLatch latch = new CountDownLatch(1);
+		TCPMain main = new TCPMain(latch);
+		(new Thread(main)).start();
+		latch.await();
+		
+		ChartSeries avgSeries = new ChartSeries("TCP", main.getNumClientArray(), main.getAvgTimeArray());
+		ChartSeries stdSeries = new ChartSeries("TCP", main.getNumClientArray(), main.getStdDeviationArray());
+		
+		Exporter.exportJson(avgSeries, "tcp_avg.json");
+		Exporter.exportJson(stdSeries, "tcp_std.json");
 	}
 
 }

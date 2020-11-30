@@ -1,6 +1,10 @@
 package br.cin.ufpe.pcd.exercicio4.mq;
 
+import java.io.IOException;
 import java.util.concurrent.CountDownLatch;
+
+import br.cin.ufpe.pcd.util.ChartSeries;
+import br.cin.ufpe.pcd.util.Exporter;
 
 public class RabbitMQMain extends Thread {
 
@@ -21,7 +25,7 @@ public class RabbitMQMain extends Thread {
 	@Override
 	public void run() {
 		try {
-			Integer[] numClientsArray = {2, 5, 10};
+			Integer[] numClientsArray = {2, 5, 10, 20};
 			this.numClientArray = numClientsArray;
 			this.avgTimeArray = new Long[numClientsArray.length];
 			this.stdDeviationArray = new Double[numClientsArray.length];
@@ -65,7 +69,7 @@ public class RabbitMQMain extends Thread {
 				this.avgTimeArray[i] = measuringReceiver.getAvgTime();
 				this.stdDeviationArray[i] = measuringReceiver.getStdDeviation();
 				
-				System.out.println("avg time: "+measuringReceiver.getAvgTime()+" nanosec");
+				System.out.println("avg time: "+measuringReceiver.getAvgTime()+" ms");
 				System.out.printf("std deviation: %.2f", measuringReceiver.getStdDeviation());
 				System.out.println();
 			}
@@ -91,8 +95,17 @@ public class RabbitMQMain extends Thread {
 		return stdDeviationArray;
 	}
 
-	public static void main(String[] args) {
-		(new Thread(new RabbitMQMain())).start();
+	public static void main(String[] args)throws IOException, InterruptedException {
+		CountDownLatch latch = new CountDownLatch(1);
+		RabbitMQMain main = new RabbitMQMain(latch);
+		(new Thread(main)).start();
+		latch.await();
+		
+		ChartSeries avgSeries = new ChartSeries("RABBIT", main.getNumClientArray(), main.getAvgTimeArray());
+		ChartSeries stdSeries = new ChartSeries("RABBIT", main.getNumClientArray(), main.getStdDeviationArray());
+		
+		Exporter.exportJson(avgSeries, "rbt_avg.json");
+		Exporter.exportJson(stdSeries, "rbt_std.json");
 	}
 
 }

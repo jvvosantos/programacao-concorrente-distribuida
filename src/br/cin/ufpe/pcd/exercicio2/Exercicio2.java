@@ -1,5 +1,6 @@
 package br.cin.ufpe.pcd.exercicio2;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.concurrent.CountDownLatch;
 
@@ -10,7 +11,7 @@ import br.cin.ufpe.pcd.util.GenericBarChart;
 
 public class Exercicio2 {
 	
-	public static void main(String[] args) throws InterruptedException {
+	public static void main(String[] args) throws InterruptedException, IOException {
 		CountDownLatch latch = new CountDownLatch(1);
 		
 		System.out.println("## Getting TCP Results ##");

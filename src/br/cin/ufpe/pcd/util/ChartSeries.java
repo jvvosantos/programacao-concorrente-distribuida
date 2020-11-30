@@ -3,6 +3,9 @@ package br.cin.ufpe.pcd.util;
 import java.util.Arrays;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class ChartSeries {
 	
 	private String name;
@@ -24,7 +27,16 @@ public class ChartSeries {
 		this.xData = Arrays.asList(xDataArray);
 		this.yData = Arrays.asList(yDataArray);
 	}
-
+	
+	@JsonCreator
+	public ChartSeries( @JsonProperty("name") String name, 
+						@JsonProperty("xData") Integer[] xDataArray, 
+						@JsonProperty("yData") Double[] yDataArray) {
+		this.name = name;
+		this.xData = Arrays.asList(xDataArray);
+		this.yData = Arrays.asList(yDataArray);
+	}
+	
 	public String getName() {
 		return name;
 	}
