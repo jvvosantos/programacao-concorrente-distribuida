@@ -17,7 +17,7 @@ public class Analysis {
 											udpAvgSeries, 
 											tcpAvgSeries, 
 											rmiAvgSeries, 
-//											rabbitAvgSeries, 
+											rabbitAvgSeries, 
 											rpcAvgSeries, 
 											poolingRpcAvgSeries));
 		avgComparison.show();
@@ -33,7 +33,7 @@ public class Analysis {
 											udpStdSeries, 
 											tcpStdSeries, 
 											rmiStdSeries, 
-//											rabbitStdSeries, 
+											rabbitStdSeries, 
 											rpcStdSeries, 
 											poolingRpcStdSeries));
 		stdComparison.show();
